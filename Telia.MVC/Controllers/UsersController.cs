@@ -135,7 +135,8 @@ namespace Telia.MVC.Controllers
         {
             var model = new Areas.Identity.Pages.Account.Manage.ChangePasswordModel.InputModel()
             {
-                UserId = id
+                UserId = id,
+                OldPassword = "someValue",
             };
             return View(model);
         }

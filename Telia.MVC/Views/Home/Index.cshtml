@@ -3,7 +3,29 @@
 }
 <div class="container">
     <div class="row">
-        <div class="col-md-6">  <p class="text-center text-success"> What is done</p> </div>
-        <div class="col-md-6">  <p class="text-center text-warning"> What could have been done</p> </div>
+        <div class="col-md-6">  <p class="h1 text-center text-dark"> What is done</p> 
+            <ul class="text-success h5">
+              <li class="py-2">Implemented Microsoft Identity, extended user Class with few fields.  </li>
+                <li class="py-2">Added 3 roles "Admin", "Moderator", "Customer."</li>
+                <li class="py-2">Ability to assign user a role"</li>
+              <li class="py-2">On creation, user is automatically   assigned as a "Customer."</li>
+              <li class="py-2">Created super user, whose email is test@admin.com</li>
+              <li class="py-2">Displays every Users' roles</li>
+              <li class="py-2">Created a few Views, that are accessible only for particular Roles. </li>
+              <li class="py-2">Only "Admin" is able to CRUD all users.</li>
+              <li class="py-2">"Admin" is able to modify few more fields of IdentityUser class. He can even change password</li>
+              <li class="py-2">Implemented CRUD operation with User class </li>
+                
+            </ul>
+            </div>
+        <div class="col-md-6">  <p class="h1 text-center text-dark"> What could have been done</p>
+            <ul  class="text-primary h5">
+                <li class="py-2">Could have added more tables in database, to show understanding of EntityFramework Code first approach </li>
+              <li class="py-2">In Users/Edit/Id when hoovered on Users' roles, shows action. Does nothing. (Idea was to delete from hoovered role)</li>
+              <li class="py-2">Could have implemented more functionality in order to demonstrate Role based authorization. </li>
+                <li class="py-2">Could have dove everything in Lithuanian. But I thought that I hadn't chance to show my english skills. So here they are. :)' </li>
+                <li class="py2">Could have removed unnecessary files from Identity</li>
+            </ul>
+            </div>
     </div>
 </div>
