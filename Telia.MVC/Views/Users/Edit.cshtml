@@ -33,7 +33,7 @@
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>            
             
-            @if (Model.UserRoles.Count >=0)//if user belongs to at least one role
+            @if (Model.UserRoles.Count >0)//if user belongs to at least one role
             {
                 <div class="form-group ">
                     <label asp-for="UserRoles" class="control-label"></label>
