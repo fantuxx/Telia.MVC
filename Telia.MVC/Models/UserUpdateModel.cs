@@ -1,5 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
 
 namespace Telia.MVC.Data
@@ -34,16 +36,17 @@ namespace Telia.MVC.Data
         public bool TwoFactorEnabled { get; set; }
         public string Id { get; set; }
 
-        
-        public  Roles Role { get; set; }
-
-
-        public enum Roles
+        [Display(Name = "Add user to new Role")]
+        public List<SelectListItem> Roles { get; set; } = new List<SelectListItem>()
         {
-            Admin,
-            Moderator,
-            User
-        }
-        
+            new SelectListItem("Select a role", ""),
+            new SelectListItem("Admin", "Admin"),
+            new SelectListItem("Moderator", "Moderator"),
+            new SelectListItem("Customer", "Customer")
+        };
+     
+        public string Role { get; set; }
+        [Display(Name = "User currently is in these roles:")]
+        public List<string> UserRoles { get; set; }
     }
 }

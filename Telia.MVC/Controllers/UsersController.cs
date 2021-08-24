@@ -53,7 +53,8 @@ namespace Telia.MVC.Controllers
                 LockoutEnabled = user.LockoutEnabled,
                 TwoFactorEnabled = user.TwoFactorEnabled,
                 Id = user.Id,
-                Role = UserUpdateModel.Roles.User,
+                Role = "",
+                UserRoles = (List<string>) await _userMoManager.GetRolesAsync(user),
             };
             return View(model);
         }
@@ -67,9 +68,9 @@ namespace Telia.MVC.Controllers
 
             if (ModelState.IsValid)
             {
+               
                 
                     var user = await _context.Users.FindAsync(id);
-
                     user.LastName = ModelFromView.LastName;
                     user.Name = ModelFromView.Name;
                     user.PhoneNumber = ModelFromView.PhoneNumber;
@@ -79,10 +80,26 @@ namespace Telia.MVC.Controllers
                     user.LockoutEnabled = ModelFromView.LockoutEnabled;
                     user.TwoFactorEnabled = ModelFromView.TwoFactorEnabled;
 
-                    _context.Update(user);
-                    _context.SaveChanges();
+                    if (!String.IsNullOrEmpty(ModelFromView.Role))
+                    {
 
-                    return RedirectToAction(nameof(Index));
+
+                        var x = await _userMoManager.IsInRoleAsync(user, ModelFromView.Role);
+                        if (!x)
+                        {
+                            await _userMoManager.AddToRoleAsync(user, ModelFromView.Role);
+                        }
+
+
+                        _context.Update(user);
+                        await _context.SaveChangesAsync();
+
+                        return RedirectToAction(nameof(Index));
+                    }
+                    else
+                    {
+                        return View(ModelFromView);
+                    }
 
 
             }

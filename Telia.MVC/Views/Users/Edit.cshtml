@@ -1,10 +1,6 @@
 ﻿@using Telia.MVC.Data
 @model  Telia.MVC.Data.UserUpdateModel
-@Html.DropDownListFor(m=> m.Role,
-    new SelectList(Enum.GetValues(typeof(UserUpdateModel.Roles))),"Select Role")
-@{
-    ViewData["Title"] = "Edit";
-}
+
 
 <h1>Edit the data about the user</h1>
 
@@ -35,16 +31,29 @@
                 <label asp-for="Email" class="control-label"></label>
                 <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <select class="form-control" id="UserRole" name="UserROle">
-                <label> Pick a role </label>
-                <option>Select Roles</option>
-                <option>Admin</option>
-                <option>Moderator</option>
-                <option>User</option>
-            </select>
+            </div>            
+            
+            @if (Model.UserRoles.Count >=0)//if user belongs to at least one role
+            {
+                <div class="form-group ">
+                    <label asp-for="UserRoles" class="control-label"></label>
+                    <br/>
+                    @foreach (var item in Model.UserRoles)
+                    {
+                        <a class="btn btn-outline-primary">@item</a>
+                    }
+                </div>       
 
+            }
+            
+            <div class="form-group ">
+                <label asp-for="Roles" class="control-label"></label>
+                <select asp-for="Role" asp-items="Model.Roles" class="form-control">
+                </select>
+            </div>    
+            
 
+           
             <div class="form-group">
                 <label asp-for="EmailConfirmed" class="control-label"></label>
                 <input asp-for="EmailConfirmed" class="form-control" />
