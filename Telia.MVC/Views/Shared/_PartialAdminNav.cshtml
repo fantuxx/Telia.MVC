@@ -1,0 +1,15 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Telia.MVC.Data
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+@{
+
+    if (User.IsInRole("Admin") )
+    {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Index">Admin Panel</a>
+        </li>
+      
+    }
+}

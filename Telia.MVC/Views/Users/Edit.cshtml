@@ -1,0 +1,85 @@
+﻿@using Telia.MVC.Data
+@model  Telia.MVC.Data.UserUpdateModel
+@Html.DropDownListFor(m=> m.Role,
+    new SelectList(Enum.GetValues(typeof(UserUpdateModel.Roles))),"Select Role")
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit the data about the user</h1>
+
+<h4>Do it wisely</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+           
+           <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName" class="control-label"></label>
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PhoneNumber" class="control-label"></label>
+                <input asp-for="PhoneNumber" class="form-control" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group, pb-2 ">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <select class="form-control" id="UserRole" name="UserROle">
+                <label> Pick a role </label>
+                <option>Select Roles</option>
+                <option>Admin</option>
+                <option>Moderator</option>
+                <option>User</option>
+            </select>
+
+
+            <div class="form-group">
+                <label asp-for="EmailConfirmed" class="control-label"></label>
+                <input asp-for="EmailConfirmed" class="form-control" />
+                <span asp-validation-for="EmailConfirmed" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PhoneNumberConfirmed" class="control-label"></label>
+                <input asp-for="PhoneNumberConfirmed" class="form-control" />
+                <span asp-validation-for="PhoneNumberConfirmed" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="LockoutEnabled" class="control-label"></label>
+                <input asp-for="LockoutEnabled" class="form-control" />
+                <span asp-validation-for="LockoutEnabled" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TwoFactorEnabled" class="control-label"></label>
+                <input asp-for="TwoFactorEnabled" class="form-control" />
+                <span asp-validation-for="TwoFactorEnabled" class="text-danger"></span>
+            </div>
+     
+            
+
+
+
+
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
