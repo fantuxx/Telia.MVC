@@ -34,8 +34,8 @@ namespace Telia.MVC.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
-            [Required]
-            [DataType(DataType.Password)]
+          
+            
             [Display(Name = "Current password")]
             public string OldPassword { get; set; }
 
@@ -49,6 +49,7 @@ namespace Telia.MVC.Areas.Identity.Pages.Account.Manage
             [Display(Name = "Confirm new password")]
             [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+            public string UserId { get; set; }
         }
 
         public async Task<IActionResult> OnGetAsync()

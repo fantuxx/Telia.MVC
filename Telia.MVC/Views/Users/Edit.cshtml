@@ -6,13 +6,14 @@
 
 <h4>Do it wisely</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
+
+<form asp-action="Edit">
+    <div class="row">
+        <div class="col-md-6">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
-           
-           <div class="form-group">
+
+            <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
@@ -31,64 +32,67 @@
                 <label asp-for="Email" class="control-label"></label>
                 <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
-            </div>            
-            
-            @if (Model.UserRoles.Count >0)//if user belongs to at least one role
+            </div>
+
+        </div>
+
+        <div class="col-md-6">
+
+            @if (Model.UserRoles.Count > 0)//if user belongs to at least one role
             {
                 <div class="form-group ">
                     <label asp-for="UserRoles" class="control-label"></label>
-                    <br/>
+                    <br />
                     @foreach (var item in Model.UserRoles)
                     {
-                        <a class="btn btn-outline-primary">@item</a>
+                        <a class="btn btn-outline-primary" title="Remove from this role"> @item</a>
                     }
-                </div>       
+                </div>}
 
-            }
-            
             <div class="form-group ">
                 <label asp-for="Roles" class="control-label"></label>
                 <select asp-for="Role" asp-items="Model.Roles" class="form-control">
                 </select>
-            </div>    
-            
-
-           
-            <div class="form-group">
-                <label asp-for="EmailConfirmed" class="control-label"></label>
-                <input asp-for="EmailConfirmed" class="form-control" />
-                <span asp-validation-for="EmailConfirmed" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PhoneNumberConfirmed" class="control-label"></label>
-                <input asp-for="PhoneNumberConfirmed" class="form-control" />
-                <span asp-validation-for="PhoneNumberConfirmed" class="text-danger"></span>
+                <div class="form-check">
+                    <input class="check" type="checkbox" asp-for="@Model.EmailConfirmed">
+                    <label class="form-check-label" asp-for="@Model.EmailConfirmed">
+                        User Email confirmed
+                    </label>
+                </div>
             </div>
             <div class="form-group">
-                <label asp-for="LockoutEnabled" class="control-label"></label>
-                <input asp-for="LockoutEnabled" class="form-control" />
-                <span asp-validation-for="LockoutEnabled" class="text-danger"></span>
+                <div class="form-check">
+                    <input class="check" type="checkbox" asp-for="@Model.PhoneNumberConfirmed">
+                    <label class="form-check-label" asp-for="@Model.PhoneNumberConfirmed">
+                        User Phone number confirmed
+                    </label>
+                </div>
             </div>
             <div class="form-group">
-                <label asp-for="TwoFactorEnabled" class="control-label"></label>
-                <input asp-for="TwoFactorEnabled" class="form-control" />
-                <span asp-validation-for="TwoFactorEnabled" class="text-danger"></span>
+                <div class="form-check">
+                    <input class="check" type="checkbox" asp-for="@Model.LockoutEnabled">
+                    <label class="form-check-label" asp-for="@Model.LockoutEnabled">
+                        Lockout mode enebled for the user
+                    </label>
+                </div>
             </div>
-     
-            
 
+        </div>
 
+        <input type="submit" value="Save" class="btn btn-primary btn-block" />
 
+       
 
-
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
     </div>
-</div>
+   
+
+</form>
+
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Back to List</a> <br />
+    <a class="text-dark" asp-action="ChangePassword" asp-route-id="@Model.Id">Change users password</a>  
 </div>
 

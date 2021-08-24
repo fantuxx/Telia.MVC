@@ -5,11 +5,11 @@
 @inject UserManager<User> UserManager
 @{
 
-    if (User.IsInRole("Admin") )
+    if (User.IsInRole("Moderator"))
     {
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="Index" asp-controller="Users" asp-action="Index">Admin Panel</a>
+            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="ModeratorsStuff">Customer area</a>
         </li>
-      
+
     }
 }

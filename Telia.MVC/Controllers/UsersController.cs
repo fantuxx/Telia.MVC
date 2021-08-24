@@ -20,12 +20,13 @@ namespace Telia.MVC.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<User> _userMoManager;
 
-        public UsersController(ApplicationDbContext context, UserManager<User>userMoManager)
+        public UsersController(ApplicationDbContext context, UserManager<User> userMoManager)
         {
             _context = context;
             _userMoManager = userMoManager;
         }
 
+    
         public async Task<IActionResult> Index() // show All Users
         {
             return View(await _context.Users.ToListAsync());
@@ -54,52 +55,43 @@ namespace Telia.MVC.Controllers
                 TwoFactorEnabled = user.TwoFactorEnabled,
                 Id = user.Id,
                 Role = "",
-                UserRoles = (List<string>) await _userMoManager.GetRolesAsync(user),
+                UserRoles = (List<string>)await _userMoManager.GetRolesAsync(user),
             };
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("Name, LastName,PhoneNumber, Email,  EmailConfirmed,PhoneNumberConfirmed ,LockoutEnabled ,TwoFactorEnabled, Role ")]UserUpdateModel ModelFromView)
+        public async Task<IActionResult> Edit(string id, [Bind("Name, LastName,PhoneNumber, Email,  EmailConfirmed,PhoneNumberConfirmed ,LockoutEnabled ,TwoFactorEnabled, Role ")] UserUpdateModel ModelFromView)
         {
-           
+
             //admin id 6fe73b67-e277-4079-8deb-a1497945a0b6
 
             if (ModelState.IsValid)
             {
-               
-                
-                    var user = await _context.Users.FindAsync(id);
-                    user.LastName = ModelFromView.LastName;
-                    user.Name = ModelFromView.Name;
-                    user.PhoneNumber = ModelFromView.PhoneNumber;
-                    user.Email = ModelFromView.Email;
-                    user.EmailConfirmed = ModelFromView.EmailConfirmed;
-                    user.PhoneNumberConfirmed = ModelFromView.PhoneNumberConfirmed;
-                    user.LockoutEnabled = ModelFromView.LockoutEnabled;
-                    user.TwoFactorEnabled = ModelFromView.TwoFactorEnabled;
 
-                    if (!String.IsNullOrEmpty(ModelFromView.Role))
+
+                var user = await _context.Users.FindAsync(id);
+                user.LastName = ModelFromView.LastName;
+                user.Name = ModelFromView.Name;
+                user.PhoneNumber = ModelFromView.PhoneNumber;
+                user.Email = ModelFromView.Email;
+                user.EmailConfirmed = ModelFromView.EmailConfirmed;
+                user.PhoneNumberConfirmed = ModelFromView.PhoneNumberConfirmed;
+                user.LockoutEnabled = ModelFromView.LockoutEnabled;
+                user.TwoFactorEnabled = ModelFromView.TwoFactorEnabled;
+
+                if (!String.IsNullOrEmpty(ModelFromView.Role))//checks whether the user selected valid role
+                {
+                    var x = await _userMoManager.IsInRoleAsync(user, ModelFromView.Role);
+                    if (!x)
                     {
-
-
-                        var x = await _userMoManager.IsInRoleAsync(user, ModelFromView.Role);
-                        if (!x)
-                        {
-                            await _userMoManager.AddToRoleAsync(user, ModelFromView.Role);
-                        }
-
-
-                        _context.Update(user);
-                        await _context.SaveChangesAsync();
-
-                        return RedirectToAction(nameof(Index));
+                        await _userMoManager.AddToRoleAsync(user, ModelFromView.Role);
                     }
-                    else
-                    {
-                        return View(ModelFromView);
-                    }
+                } _context.Update(user);
+                await _context.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
 
 
             }
@@ -114,15 +106,66 @@ namespace Telia.MVC.Controllers
 
         }
 
-
-        public IActionResult Delete(string id)
+        [HttpGet]
+        public async Task<IActionResult> Delete(string id)
         {
-            return View();
+            var user = await _context.Users.FindAsync(id);
+            return View(user);
         }
 
-        public IActionResult View(string Id)
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfimr(string Id)
         {
-            return View();
+            var user = await _context.Users.FindAsync(Id);
+            if (user !=  null)
+            {
+                await _context.SaveChangesAsync();
+                _context.Users.Remove(user);
+                _context.SaveChanges();
+                return RedirectToAction(nameof(Index));               
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        public IActionResult ChangePassword(string id)
+        {
+            var model = new Areas.Identity.Pages.Account.Manage.ChangePasswordModel.InputModel()
+            {
+                UserId = id
+            };
+            return View(model);
+        }
+        [HttpPost]
+          public async Task<IActionResult> ChangePassword(Areas.Identity.Pages.Account.Manage.ChangePasswordModel.InputModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            else
+            {
+                var user = await _context.Users.FindAsync(model.UserId);
+                if (user == null)
+                {
+                    return NotFound($"Unable to load user with ID '{model.UserId}'.");
+                }
+
+                await _userMoManager.RemovePasswordAsync(user);
+                await _userMoManager.AddPasswordAsync(user, model.NewPassword);
+                   
+                return RedirectToAction(nameof(Index));
+            }            
+        }
+
+
+        public async Task<IActionResult> Details(string Id)
+        {
+            var user = await _context.Users.FindAsync(Id);
+            return View(user);
         }
 
         public IActionResult Create()
@@ -169,7 +212,7 @@ namespace Telia.MVC.Controllers
                 return View(model);
             }
             //i If we got so far
-            return NotFound();
+           
 
 
         }

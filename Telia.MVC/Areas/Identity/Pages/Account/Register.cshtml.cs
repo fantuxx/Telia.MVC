@@ -102,10 +102,15 @@ namespace Telia.MVC.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
                     //sukuriame roles ir pridedame AdminUseri
-                    if (user.Email == "test@admin.com")
+
+                    if (user.Email == "test@admin.com")//if user is super admin
                     {
                         await CreateRoles();
                         await _userManager.AddToRoleAsync(user, "Admin");
+                    }
+                    else //else user is Customer role
+                    {
+                        await _userManager.AddToRoleAsync(user, "Customer");
                     }
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
